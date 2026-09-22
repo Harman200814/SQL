@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: antivenom-finder
+    runtime: node
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: antivenom-db
+          property: connectionString
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: ADMIN_USERNAME
+        sync: false
+      - key: ADMIN_PASSWORD_HASH
+        sync: false
+
+databases:
+  - name: antivenom-db
+    databaseName: antivenom
+    user: antivenom
